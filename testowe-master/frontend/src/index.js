@@ -1,21 +1,23 @@
 import React from 'react'
-import {render} from 'react-dom'
-import {Provider} from 'react-redux'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
 import configureStore from './store'
 import LoginPage from './containers/login/LoginPage'
-import {Redirect, Route, Router} from 'react-router-dom'
+import { Redirect, Route, Router } from 'react-router-dom'
 import './index.scss'
 import AppTemplate from "./containers/template/AppTemplate";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
-import {PersistGate} from 'redux-persist/es/integration/react';
+import { PersistGate } from 'redux-persist/es/integration/react';
 import Users from "./containers/users/Users";
 import User from "./containers/users/User";
 import history from "./history";
 import axios from "axios";
+import Certificates from './containers/certificates/Certificates'
+import NewCertificate from './containers/certificates/NewCertificate'
 
-export const {persistor, store} = configureStore();
+export const { persistor, store } = configureStore();
 
 const target = document.querySelector('#root');
 axios.defaults.baseURL = 'http://localhost:4000';
@@ -31,13 +33,14 @@ render(
                             store.getState().appState.authenticated ? (
                                 <Users {...props} />
                             ) : (
-                                <Redirect to="/login"/>
+                                <Redirect to="/login" />
                             )
-                        )}/>
-                        <Route path="/users" component={Users}/>
-                        <Route path="/user/:id?" component={User}/>
-                        <Route path="/login" component={LoginPage}/>
-
+                        )} />
+                        <Route path="/users" component={Users} />
+                        <Route path="/user/:id?" component={User} />
+                        <Route path="/login" component={LoginPage} />
+                        <Route path="/Certificates" component={Certificates} />
+                        <Route path="/NewCertificate/:id?" component={NewCertificate} />
                     </AppTemplate>
                 </div>
             </Router>

@@ -3,54 +3,56 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Button, Col, Glyphicon, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import * as actions from "./UsersApi";
+import * as actions from "./CertificatesApi";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 
-class Users extends Component {
-    state = { users: null, page: 1, sizePerPage: 10 };
+class Certificates extends Component {
+    state = { certificates: null, page: 1, sizePerPage: 10 };
 
-    componentDidMount() {
-        this.reload();
-    }
+    /*
+  componentDidMount() {
+      this.reload();
+  }
 
-    reload() {
-        const { page, sizePerPage } = this.state;
-        this.props.actions.loadUsers({ page: page, per_page: sizePerPage },
-            users => this.setState({ users, page, sizePerPage }));
-
-    }
-
-    delete(id) {
-        this.props.actions.deleteUser(id, () => {
-            this.reload();
-        });
-    }
-
+ 
+  
+      reload() {
+          const { page, sizePerPage } = this.state;
+          this.props.actions.loadCertificates({ page: page, per_page: sizePerPage },
+              certificates => this.setState({ certificates, page, sizePerPage }));
+      }
+  
+       delete(id) {
+           this.props.actions.deleteCertificate(id, () => {
+               this.reload();
+           });
+       }
+   
+  */
 
     render() {
-        const { users, page, sizePerPage } = this.state;
-        console.log("xdddd", users);
+        const { certificates, page, sizePerPage } = this.state;
         return (<div>
             <Row className="vertical-middle breadcrumbs">
                 <Col xs={8}>
                     <h5>
                         <Glyphicon
-                            glyph="cog" /> Admin {'>'} Users
+                            glyph="cog" /> Admin {'>'} Certificates
                     </h5>
                 </Col>
                 <Col xs={4} className="text-right">
                     <h4>
-                        <LinkContainer exact to={`/user`}>
+                        <LinkContainer exact to={`/NewCertificate`}>
                             <Button bsStyle={'success'}><Glyphicon
                                 glyph="plus" /> Add</Button>
                         </LinkContainer>
                     </h4>
                 </Col>
             </Row>
-            {users &&
+            {certificates &&
                 <BootstrapTable
-                    data={users}
-                    fetchInfo={{ dataTotalSize: users.length }}
+                    data={certificates}
+                    fetchInfo={{ dataTotalSize: certificates.length }}
                     striped
                     hover
                     remote
@@ -113,4 +115,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     undefined,
     mapDispatchToProps
-)(Users)
+)(Certificates)

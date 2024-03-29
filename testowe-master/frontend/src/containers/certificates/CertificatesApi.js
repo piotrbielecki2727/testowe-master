@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export var loadUsers = (params, callback) => async (dispatch, getState) => {
+export var loadCertificates = (params, callback) => async (dispatch, getState) => {
     var config = {
-        url: '/users',
+        url: '/Certificates',
         params,
         headers: { authorization: getState().appState.token }
     };
@@ -11,11 +11,11 @@ export var loadUsers = (params, callback) => async (dispatch, getState) => {
     callback(result.data);
 };
 
-export var loadUser = (id, callback) => async (dispatch, getState) => {
+export var loadCertificate = (id, callback) => async (dispatch, getState) => {
     var config = {
-        url: `/users/${id}`,
+        url: `/Certificates/${id}`,
         data: {
-            user: { id: id }
+            certificate: { id: id }
         },
         headers: { authorization: getState().appState.token }
     };
@@ -23,9 +23,10 @@ export var loadUser = (id, callback) => async (dispatch, getState) => {
     callback(result.data);
 };
 
-export var saveUser = (resource, callback) => async (dispatch, getState) => {
+export var saveCertificate = (resource, callback) => async (dispatch, getState) => {
+    console.log("saveCertificate")
     var config = {
-        url: resource.id ? `/users/${resource.id}` : '/users',
+        url: resource.id ? `/Certificates/${resource.id}` : '/Certificates',
         method: resource.id ? 'PUT' : 'POST',
         data: {
             user: resource
@@ -36,9 +37,9 @@ export var saveUser = (resource, callback) => async (dispatch, getState) => {
     callback(result.data);
 };
 
-export var deleteUser = (id, callback) => async (dispatch, getState) => {
+export var deleteCertificate = (id, callback) => async (dispatch, getState) => {
     var config = {
-        url: `/users/${id}`,
+        url: `/Certificates/${id}`,
         method: 'DEvarE',
         headers: { authorization: getState().appState.token }
     };

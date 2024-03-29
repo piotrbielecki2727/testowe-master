@@ -86,7 +86,7 @@ class User extends Component {
                     <Col xs={8}>
                         <h5>
                             <Glyphicon
-                                glyph="cog"/> Admin > Users > {resource.id ?
+                                glyph="cog"/> Admin {'>'} Users {'>'} {resource.id ?
                                 <span><b>{previousUserName}</b> - edit</span> :
                                 <span>New</span>}
                         </h5>
