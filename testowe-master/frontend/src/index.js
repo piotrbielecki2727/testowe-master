@@ -39,8 +39,8 @@ render(
                         <Route path="/users" component={Users} />
                         <Route path="/user/:id?" component={User} />
                         <Route path="/login" component={LoginPage} />
-                        <Route path="/Certificates" component={Certificates} />
-                        <Route path="/NewCertificate/:id?" component={NewCertificate} />
+                        <Route path="/certificates" component={Certificates} />
+                        <Route path="/certificate/:id?" component={NewCertificate} />
                     </AppTemplate>
                 </div>
             </Router>

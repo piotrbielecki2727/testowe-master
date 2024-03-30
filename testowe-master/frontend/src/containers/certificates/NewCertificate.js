@@ -19,13 +19,13 @@ class NewCertificate extends Component {
     };
     handleSelectedUserChange = (e) => {
         const { resource } = this.state;
-        this.setState({ resource: { ...resource, selectedUser: e.target.value } });
+        this.setState({ resource: { ...resource, user_id: e.target.value } });
     };
 
 
 
 
-    saveUser = (e) => {
+    saveCertificate = (e) => {
         e.preventDefault();
         const { resource } = this.state;
         const validationErrors = {};
@@ -34,19 +34,27 @@ class NewCertificate extends Component {
                 validationErrors.name = "Invalid name or name is too short";
             if (!resource.description || resource.description.length < 6)
                 validationErrors.description = "Description is not valid";
-            if (!resource.selectedUser || resource.selectedUser === '')
-                validationErrors.selectedUser = "You have to choose user";
+            if (!resource.user_id || resource.user_id === '')
+                validationErrors.user_id = "You have to choose user";
         }
         if (Object.keys(validationErrors).length > 0) {
             this.setState({ validationErrors });
 
         } else {
             this.setState({ validationErrors: {} });
-            console.log(resource);
-            this.props.actions.saveCertificate(resource, () => {
-                this.context.router.history.push('/Certificates');
+
+            this.props.actions.checkIfUserHasThisCertificate(resource, (exists) => {
+                if (exists) {
+                    this.setState({ certificateExistsError: "This user already has this certificate." });
+                }
+                else {
+                    this.props.actions.saveCertificate(resource, () => {
+                        this.context.router.history.push('/Certificates');
+                    });
+                }
             });
         }
+
     };
 
     constructor(props, context) {
@@ -56,13 +64,14 @@ class NewCertificate extends Component {
             resource: {},
             validationErrors: {},
             previousCertificateName: '',
+            certificateExistsError: null,
         }
     };
 
     componentDidMount() {
         const id = this.props.match.params.id;
         if (id != null) {
-            this.loadUser(id, organizer => this.setState({ resource: organizer }));
+            this.loadCertificate(id, organizer => this.setState({ resource: organizer }));
         } else {
             this.setState({ resource: {} });
         }
@@ -70,8 +79,8 @@ class NewCertificate extends Component {
 
     };
 
-    loadUser(id) {
-        this.props.actions.loadUser(id,
+    loadCertificate(id) {
+        this.props.actions.loadCertificate(id,
             resource => this.setState({ resource: resource, previousCertificateName: resource.name }));
     };
 
@@ -90,15 +99,15 @@ class NewCertificate extends Component {
             // console.log(validationErrors.description);
             return 'error';
         }
-        if (validationErrors.selectedUser && id === 'selectedUser') {
-            //console.log(validationErrors.selectedUser);
+        if (validationErrors.user_id && id === 'user_id') {
+            //console.log(validationErrors.user_id);
             return 'error';
         }
         return null;
     }
 
     render() {
-        const { resource, validationErrors, previousCertificateName, selectedUser, users } = this.state;
+        const { resource, validationErrors, previousCertificateName, users, certificateExistsError } = this.state;
         return (
             <div>
                 {resource && <Row className="vertical-middle breadcrumbs">
@@ -115,7 +124,7 @@ class NewCertificate extends Component {
                 {resource &&
                     <Row id='form'>
                         <Col xs={12} md={6}>
-                            <Form horizontal onSubmit={this.saveUser}>
+                            <Form horizontal onSubmit={this.saveCertificate}>
                                 <FormGroup
                                     controlId="name"
                                     validationState={this.getValidationState('name')}
@@ -157,8 +166,8 @@ class NewCertificate extends Component {
                                 </FormGroup>
 
                                 <FormGroup
-                                    controlId="selectedUser"
-                                    validationState={this.getValidationState('selectedUser')}
+                                    controlId="user_id"
+                                    validationState={this.getValidationState('user_id')}
                                 >
                                     <Col componentClass={ControlLabel}
                                         sm={2}>Users list</Col>
@@ -170,14 +179,19 @@ class NewCertificate extends Component {
                                             })}
                                         </FormControl>
                                         {
-                                            Object.keys(validationErrors).length > 0 && validationErrors.selectedUser &&
-                                            <ControlLabel>{validationErrors.selectedUser}</ControlLabel>
+                                            Object.keys(validationErrors).length > 0 && validationErrors.user_id &&
+                                            <ControlLabel>{validationErrors.user_id}</ControlLabel>
                                         }
                                     </Col>
                                     <FormControl.Feedback />
                                 </FormGroup>
-
-
+                                {certificateExistsError && (
+                                    <Row>
+                                        <Col xs={12} md={6}>
+                                            <p style={{ color: 'red' }}>{certificateExistsError}</p>
+                                        </Col>
+                                    </Row>
+                                )}
 
                                 <Col xsOffset={2} xs={10} className='form-buttons margin10'>
                                     <Button type="submit" bsStyle={'success'}>Save</Button>

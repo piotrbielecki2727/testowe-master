@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import './Certificates.scss'
 import { Button, Col, Glyphicon, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import * as actions from "./CertificatesApi";
@@ -9,26 +10,26 @@ import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 class Certificates extends Component {
     state = { certificates: null, page: 1, sizePerPage: 10 };
 
-    /*
-  componentDidMount() {
-      this.reload();
-  }
 
- 
-  
-      reload() {
-          const { page, sizePerPage } = this.state;
-          this.props.actions.loadCertificates({ page: page, per_page: sizePerPage },
-              certificates => this.setState({ certificates, page, sizePerPage }));
-      }
-  
-       delete(id) {
-           this.props.actions.deleteCertificate(id, () => {
-               this.reload();
-           });
-       }
-   
-  */
+    componentDidMount() {
+        this.reload();
+    }
+
+
+
+    reload() {
+        const { page, sizePerPage } = this.state;
+        this.props.actions.loadCertificates({ page: page, per_page: sizePerPage },
+            certificates => this.setState({ certificates, page, sizePerPage }));
+    }
+
+    delete(id) {
+        this.props.actions.deleteCertificate(id, () => {
+            this.reload();
+        });
+    }
+
+
 
     render() {
         const { certificates, page, sizePerPage } = this.state;
@@ -37,12 +38,12 @@ class Certificates extends Component {
                 <Col xs={8}>
                     <h5>
                         <Glyphicon
-                            glyph="cog" /> Admin {'>'} Certificates
+                            glyph="glyphicon glyphicon-list-alt" /> Certificates {'>'} Certificates
                     </h5>
                 </Col>
                 <Col xs={4} className="text-right">
                     <h4>
-                        <LinkContainer exact to={`/NewCertificate`}>
+                        <LinkContainer exact to={`/certificate`}>
                             <Button bsStyle={'success'}><Glyphicon
                                 glyph="plus" /> Add</Button>
                         </LinkContainer>
@@ -69,11 +70,14 @@ class Certificates extends Component {
                         sizePerPage
                     }}
                 >
-                    <TableHeaderColumn width="10" isKey dataField='id'>ID</TableHeaderColumn>
-                    <TableHeaderColumn width="35" dataField='email'>Name</TableHeaderColumn>
-                    <TableHeaderColumn width="20" dataField='id' dataFormat={(cell, row) => {
+                    <TableHeaderColumn width="10" isKey dataField='id'>Certificate ID</TableHeaderColumn>
+                    <TableHeaderColumn width="7" dataField='user_id'>User ID</TableHeaderColumn>
+                    <TableHeaderColumn width="20" dataField='email'>Users email</TableHeaderColumn>
+                    <TableHeaderColumn width="30" dataField='name'>Name</TableHeaderColumn>
+                    <TableHeaderColumn /*tdStyle={{textWrap: "wrap"}}*/ width="30" dataField='description'>Description</TableHeaderColumn>
+                    <TableHeaderColumn width="10" dataField='id' dataFormat={(cell, row) => {
                         return <div>
-                            <LinkContainer exact to={`/user/${row.id}`}>
+                            <LinkContainer exact to={`/certificate/${row.id}`}>
                                 <OverlayTrigger placement="top" overlay={
                                     <Tooltip id="tooltip">
                                         Edit
@@ -85,7 +89,7 @@ class Certificates extends Component {
                             </LinkContainer>
                             <span> </span>
 
-                            <LinkContainer to={`/`} onClick={() => this.delete(row.id)}>
+                            <LinkContainer to={`/certificates`}>
                                 <OverlayTrigger placement="top" overlay={
                                     <Tooltip id="tooltip">
                                         Delete
@@ -96,10 +100,25 @@ class Certificates extends Component {
                                             className="fas fa-trash-alt" /></span>
                                 </OverlayTrigger>
                             </LinkContainer>
+
+
+                            <span> </span>
+
+                            <LinkContainer to={`/certificate`} onClick={() => this.delete(row.id)}>
+                                <OverlayTrigger placement="top" overlay={
+                                    <Tooltip id="tooltip">
+                                        Details
+                                    </Tooltip>
+                                }>
+                                    <span className="text-info pointer"
+                                        onClick={() => this.delete(row.id)}> <i
+                                            className="fas fa-info-circle" /></span>
+                                </OverlayTrigger>
+                            </LinkContainer>
                         </div>
                     }}>Actions
                     </TableHeaderColumn>
-                </BootstrapTable>
+                </BootstrapTable >
             }
         </div>
         );

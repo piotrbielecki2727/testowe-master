@@ -19,13 +19,25 @@ class AppTemplate extends Component {
                     <Navbar.Header>
                         <Navbar.Brand>
                             <img src="/logo.svg" className="logo" />
-                            <LinkContainer exact to="/Certificates">
-                                <small>Certificates</small>
-                            </LinkContainer>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
+                        <Nav>
+                            <NavDropdown id="admin" eventKey={1}
+                                title={
+                                    <span>
+                                        <Glyphicon glyph="glyphicon glyphicon-list-alt" /> Certificates
+                                    </span>}
+                            >
+                                <LinkContainer exact to="/certificates">
+                                    <MenuItem eventKey={1.1}>
+                                        Certificates
+                                    </MenuItem>
+                                </LinkContainer>
+                            </NavDropdown>
+                        </Nav>
+
                         <Nav>
                             <NavDropdown id="admin" eventKey={1}
                                 title={

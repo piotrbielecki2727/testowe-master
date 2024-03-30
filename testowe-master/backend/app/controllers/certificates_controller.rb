@@ -1,53 +1,68 @@
 class CertificatesController < ApplicationController
-    before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_certificate, only: [:show, :update, :destroy]
 
-    # GET /users
-    # GET /users.json
-    def index
-      @users = User.paginate(page: params[:page], per_page: params[:per_page])
-    end
-  
-    # GET /users/1
-    # GET /users/1.json
-    def show
-    end
-  
-    # POST /users
-    # POST /users.json
-    def create
-      @user = User.new(user_params)
-  
-      if @user.save
-        render :show, status: :created, location: @user
-      else
-        render json: @user.errors, status: :unprocessable_entity
-      end
-    end
-  
-    # PATCH/PUT /users/1
-    # PATCH/PUT /users/1.json
-    def update
-      if @user.update(user_params)
-        render :show, status: :ok, location: @user
-      else
-        render json: @user.errors, status: :unprocessable_entity
-      end
-    end
-  
-    # DELETE /users/1
-    # DELETE /users/1.json
-    def destroy
-      @user.destroy
-    end
-  
-    private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_user
-        @user = User.find(params[:id])
-      end
-  
-      # Never trust parameters from the scary internet, only allow the white list through.
-      def user_params
-        params.require(:user).permit(:email, :password)
-      end
+  # GET /certificates
+  # GET /certificates.json
+  def index
+    @certificates = Certificate.joins(:user).select('certificates.*, users.email')
+    render json: @certificates
   end
+
+  # GET /certificates/1
+  # GET /certificates/1.json
+  def show
+    render json: @certificate
+  end
+
+  # POST /certificates
+  # POST /certificates.json
+  def create
+    @certificate = Certificate.new(certificate_params)
+
+    if @certificate.save
+      render json: @certificate, status: :created, location: @certificate
+    else
+      render json: @certificate.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /certificates/1
+  # PATCH/PUT /certificates/1.json
+  def update
+    if @certificate.update(certificate_params)
+      render json: @certificate
+    else
+      render json: @certificate.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /certificates/1
+  # DELETE /certificates/1.json
+  def destroy
+    @certificate.destroy
+  end
+
+
+  def check_certificate
+    user_id = params[:user_id]
+    name = params[:name]
+    certificate = Certificate.where(user_id: user_id, name: name).first
+  
+    if certificate
+      render json: { exists: true }, status: :ok
+    else
+      render json: { exists: false }, status: :ok
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_certificate
+      @certificate = Certificate.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def certificate_params
+      params.require(:certificate).permit(:name, :description, :user_id)
+    end
+end

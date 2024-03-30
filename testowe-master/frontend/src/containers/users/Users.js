@@ -29,7 +29,6 @@ class Users extends Component {
 
     render() {
         const { users, page, sizePerPage } = this.state;
-        console.log("xdddd", users);
         return (<div>
             <Row className="vertical-middle breadcrumbs">
                 <Col xs={8}>

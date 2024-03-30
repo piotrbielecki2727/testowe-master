@@ -7,7 +7,6 @@ export var loadUsers = (params, callback) => async (dispatch, getState) => {
         headers: { authorization: getState().appState.token }
     };
     var result = await axios.request(config);
-    console.log("api dostalo", result.data);
     callback(result.data);
 };
 
@@ -39,7 +38,7 @@ export var saveUser = (resource, callback) => async (dispatch, getState) => {
 export var deleteUser = (id, callback) => async (dispatch, getState) => {
     var config = {
         url: `/users/${id}`,
-        method: 'DEvarE',
+        method: 'DELETE',
         headers: { authorization: getState().appState.token }
     };
     await axios.request(config);
