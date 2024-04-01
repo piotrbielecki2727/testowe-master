@@ -18,7 +18,7 @@ class AppTemplate extends Component {
                 {authenticated && <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <img src="/logo.svg" className="logo" />
+                            <img src="/logo.svg" alt='Shows the applications logo in the form of a gold medal with a red ribbon.' className="logo" />
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
@@ -32,7 +32,7 @@ class AppTemplate extends Component {
                             >
                                 <LinkContainer exact to="/certificates">
                                     <MenuItem eventKey={1.1}>
-                                        Certificates
+                                       Users certificates
                                     </MenuItem>
                                 </LinkContainer>
                             </NavDropdown>

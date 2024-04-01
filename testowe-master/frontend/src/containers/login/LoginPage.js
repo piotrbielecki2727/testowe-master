@@ -1,18 +1,20 @@
-import React, {Component} from 'react';
-import {Button, ControlLabel, FormControl, FormGroup, Grid} from "react-bootstrap";
+import React, { Component } from 'react';
+import { Button, ControlLabel, FormControl, FormGroup, Grid, Modal } from "react-bootstrap";
 import './LoginPage.scss'
-import {bindActionCreators} from "redux";
+import { bindActionCreators } from "redux";
 import * as actions from "./LoginPageActions";
 import connect from "react-redux/es/connect/connect";
+import TermsModal from '../modal/Modal';
+import { PrintTerms } from '../modal/Terms';
 
 class LoginPage extends Component {
-    state = {email: 'test@test.pl', password: 'test123'};
+    state = { email: 'test@test.pl', password: 'test123' };
 
     onEmailChange = e => {
-        this.setState({email: e.target.value});
+        this.setState({ email: e.target.value });
     };
     onPasswordChange = e => {
-        this.setState({password: e.target.value});
+        this.setState({ password: e.target.value });
     };
     onSubmit = e => {
         e.preventDefault();
@@ -20,7 +22,7 @@ class LoginPage extends Component {
     };
 
     render() {
-        const {email, password} = this.state;
+        const { email, password } = this.state;
 
         return (
             <div>
@@ -44,6 +46,10 @@ class LoginPage extends Component {
                             />
                         </FormGroup>
 
+                        <FormGroup >
+                        <TermsModal modalTitle="Terms and Conditions" modalContent={<PrintTerms />} buttonText="Terms and conditions" buttonStyle={{ marginLeft: '-12px' }}
+ />
+                        </FormGroup>
                         <FormGroup>
                             <Button bsStyle="primary" type="submit" block bsSize="large">
                                 Sign in
@@ -51,7 +57,9 @@ class LoginPage extends Component {
                         </FormGroup>
                     </form>
                 </Grid>
+
             </div>
+
         );
     }
 }

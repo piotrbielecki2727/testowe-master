@@ -8,6 +8,7 @@ export var loadCertificates = (params, callback) => async (dispatch, getState) =
     };
     var result = await axios.request(config);
     callback(result.data);
+
 };
 
 export var loadCertificate = (id, callback) => async (dispatch, getState) => {
@@ -48,7 +49,6 @@ export var deleteCertificate = (id, callback) => async (dispatch, getState) => {
 
 export const checkIfUserHasThisCertificate = (resource, callback) => async (dispatch, getState) => {
     try {
-        console.log("checking backend", resource);
         const config = {
             url: `/certificates/check_certificate/${resource.user_id}/${resource.name}`,
             params: {
@@ -59,7 +59,6 @@ export const checkIfUserHasThisCertificate = (resource, callback) => async (disp
         };
         const result = await axios.request(config);
         callback(result.data.exists);
-        console.log(result.data.exists);
     } catch (error) {
         console.error("Error checking certificate existence", error);
         callback(false);

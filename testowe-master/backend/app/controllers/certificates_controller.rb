@@ -4,13 +4,16 @@ class CertificatesController < ApplicationController
   # GET /certificates
   # GET /certificates.json
   def index
-    @certificates = Certificate.joins(:user).select('certificates.*, users.email')
+    @certificates = Certificate.joins(:user)
+                               .select('certificates.*, users.email')
+                               .paginate(page: params[:page], per_page: params[:per_page])
     render json: @certificates
   end
 
   # GET /certificates/1
   # GET /certificates/1.json
   def show
+    @certificate = Certificate.joins(:user).select('certificates.*, users.email').find(params[:id])
     render json: @certificate
   end
 

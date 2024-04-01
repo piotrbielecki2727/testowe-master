@@ -16,6 +16,7 @@ import history from "./history";
 import axios from "axios";
 import Certificates from './containers/certificates/Certificates'
 import NewCertificate from './containers/certificates/NewCertificate'
+import CertificateDetails from './containers/certificates/CertificateDetails'
 
 export const { persistor, store } = configureStore();
 
@@ -41,6 +42,7 @@ render(
                         <Route path="/login" component={LoginPage} />
                         <Route path="/certificates" component={Certificates} />
                         <Route path="/certificate/:id?" component={NewCertificate} />
+                        <Route path="/certificateDetails/:id?" component={CertificateDetails}/>
                     </AppTemplate>
                 </div>
             </Router>

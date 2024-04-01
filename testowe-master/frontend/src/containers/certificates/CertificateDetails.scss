@@ -1,0 +1,30 @@
+.Grid1 {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    
+}
+
+.MainColumn {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #333;
+    border-bottom: none;
+}
+
+
+.CertificateDetailTitleCol {
+    padding: 10px;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+    font-weight: bolder;
+
+}
+
+
+.CertificateDetailDescription{
+    word-break: break-all;
+}
+
+.CertificateDetailRow:hover {
+    background-color: #e7e7e7;
+}

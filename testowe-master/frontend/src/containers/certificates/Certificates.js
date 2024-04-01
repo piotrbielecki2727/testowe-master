@@ -6,6 +6,7 @@ import { Button, Col, Glyphicon, OverlayTrigger, Row, Tooltip } from "react-boot
 import { LinkContainer } from "react-router-bootstrap";
 import * as actions from "./CertificatesApi";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import DisplayModal from '../modal/Modal'
 
 class Certificates extends Component {
     state = { certificates: null, page: 1, sizePerPage: 10 };
@@ -29,16 +30,14 @@ class Certificates extends Component {
         });
     }
 
-
-
     render() {
         const { certificates, page, sizePerPage } = this.state;
-        return (<div>
+        return (<div >
             <Row className="vertical-middle breadcrumbs">
                 <Col xs={8}>
                     <h5>
                         <Glyphicon
-                            glyph="glyphicon glyphicon-list-alt" /> Certificates {'>'} Certificates
+                            glyph="glyphicon glyphicon-list-alt" /> Certificates {'>'} Users certificates
                     </h5>
                 </Col>
                 <Col xs={4} className="text-right">
@@ -67,15 +66,16 @@ class Certificates extends Component {
                             this.reload(this.state.page, sizePerPage);
                         },
                         page,
-                        sizePerPage
-                    }}
+                        sizePerPage,
+                    }
+                    }
                 >
                     <TableHeaderColumn width="10" isKey dataField='id'>Certificate ID</TableHeaderColumn>
                     <TableHeaderColumn width="7" dataField='user_id'>User ID</TableHeaderColumn>
                     <TableHeaderColumn width="20" dataField='email'>Users email</TableHeaderColumn>
                     <TableHeaderColumn width="30" dataField='name'>Name</TableHeaderColumn>
-                    <TableHeaderColumn /*tdStyle={{textWrap: "wrap"}}*/ width="30" dataField='description'>Description</TableHeaderColumn>
-                    <TableHeaderColumn width="10" dataField='id' dataFormat={(cell, row) => {
+                    <TableHeaderColumn width="30" dataField='description'>Description</TableHeaderColumn>
+                    <TableHeaderColumn width="20" dataField='id' dataFormat={(cell, row) => {
                         return <div>
                             <LinkContainer exact to={`/certificate/${row.id}`}>
                                 <OverlayTrigger placement="top" overlay={
@@ -101,20 +101,21 @@ class Certificates extends Component {
                                 </OverlayTrigger>
                             </LinkContainer>
 
-
-                            <span> </span>
-
-                            <LinkContainer to={`/certificate`} onClick={() => this.delete(row.id)}>
+                            <LinkContainer exact to={`/certificateDetails/${row.id}`}>
                                 <OverlayTrigger placement="top" overlay={
                                     <Tooltip id="tooltip">
-                                        Details
+                                        Check details
                                     </Tooltip>
                                 }>
-                                    <span className="text-info pointer"
-                                        onClick={() => this.delete(row.id)}> <i
-                                            className="fas fa-info-circle" /></span>
+                                    <span className="text-info pointer"> <i
+                                        className="fas fa-info-circle" /></span>
                                 </OverlayTrigger>
                             </LinkContainer>
+
+
+
+
+
                         </div>
                     }}>Actions
                     </TableHeaderColumn>
@@ -135,3 +136,9 @@ export default connect(
     undefined,
     mapDispatchToProps
 )(Certificates)
+
+
+
+
+
+
