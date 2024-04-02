@@ -23,17 +23,19 @@ class NewCertificate extends Component {
     };
 
 
-
-
-    saveCertificate = (e) => {
-        e.preventDefault();
-        const { resource } = this.state;
+    checkValidationErrors = () => {
         const validationErrors = {};
-        if (Object.keys(resource).length >= 0) {
-            if (!resource.name || resource.name.length < 3)
-                validationErrors.name = "Invalid name or name is too short";
-            if (!resource.description || resource.description.length < 6)
-                validationErrors.description = "Description is not valid";
+        const { resource } = this.state;
+        if (resource) {
+            if (!resource.name)
+                validationErrors.name = "Name can't be empty";
+            else if (resource.name.length < 3) {
+                validationErrors.name = "Name can't be shorter than 3 characters.";
+            }
+            if (!resource.description)
+                validationErrors.description = "Description can't be empty";
+            else if (resource.description.length < 6)
+                validationErrors.description = "Description can't be shorter than 6 characters.";
             if (!resource.user_id || resource.user_id === '')
                 validationErrors.user_id = "You have to choose user";
         }
@@ -42,19 +44,44 @@ class NewCertificate extends Component {
 
         } else {
             this.setState({ validationErrors: {} });
-
-            this.props.actions.checkIfUserHasThisCertificate(resource, (exists) => {
-                if (exists) {
-                    this.setState({ certificateExistsError: "This user already has this certificate." });
-                }
-                else {
-                    this.props.actions.saveCertificate(resource, () => {
-                        this.context.router.history.push('/Certificates');
-                    });
-                }
-            });
         }
+        return validationErrors;
+    }
 
+
+    saveCertificate = (e) => {
+        e.preventDefault();
+        const { resource, previousCertificateName } = this.state;
+        const validationErrorsExist = this.checkValidationErrors();
+            if (Object.keys(validationErrorsExist).length > 0) {
+            return;
+        }
+    
+        if (resource.id) {
+            if (previousCertificateName !== resource.name) {
+                this.checkAndSaveCertificate(resource);
+            } else {
+                this.saveCertificateAction(resource);
+            }
+        } else {
+            this.checkAndSaveCertificate(resource);
+        }
+    };
+    
+    checkAndSaveCertificate = (resource) => {
+        this.props.actions.checkIfUserHasThisCertificate(resource, (exists) => {
+            if (exists) {
+                this.setState({ certificateExistsError: "This user already has this certificate." });
+            } else {
+                this.saveCertificateAction(resource);
+            }
+        });
+    };
+    
+    saveCertificateAction = (resource) => {
+        this.props.actions.saveCertificate(resource, () => {
+            this.context.router.history.push('/Certificates');
+        });
     };
 
     constructor(props, context) {
@@ -172,8 +199,10 @@ class NewCertificate extends Component {
                                     <Col componentClass={ControlLabel}
                                         sm={2}>Users list</Col>
                                     <Col sm={10}>
-                                        <FormControl onChange={this.handleSelectedUserChange} componentClass="select" placeholder="select" >
-                                            <option hidden>Select user</option>
+                                        <FormControl onChange={this.handleSelectedUserChange}
+                                            componentClass="select"
+                                            placeholder="select" >
+                                            <option hidden>{resource.email}</option>
                                             {users && users.map((user) => {
                                                 return <option key={user.id} value={user.id}>{user.email}</option>
                                             })}

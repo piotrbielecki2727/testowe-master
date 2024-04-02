@@ -18,8 +18,7 @@ class Certificates extends Component {
 
 
 
-    reload() {
-        const { page, sizePerPage } = this.state;
+    reload(page=this.state.page, sizePerPage=this.state.sizePerPage) {
         this.props.actions.loadCertificates({ page: page, per_page: sizePerPage },
             certificates => this.setState({ certificates, page, sizePerPage }));
     }
@@ -55,7 +54,7 @@ class Certificates extends Component {
                     fetchInfo={{ dataTotalSize: certificates.length }}
                     striped
                     hover
-                    remote
+                    //remote
                     pagination
                     bordered={false}
                     options={{
@@ -63,7 +62,7 @@ class Certificates extends Component {
                             this.reload(page, sizePerPage);
                         },
                         onSizePerPageList: sizePerPage => {
-                            this.reload(this.state.page, sizePerPage);
+                            this.reload(1, sizePerPage);
                         },
                         page,
                         sizePerPage,
