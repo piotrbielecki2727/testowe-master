@@ -14,6 +14,7 @@ export const login = (email, password) => async (dispatch, getState) => {
         dispatch({
             type: LOGIN,
             token: tokenResponse.headers.authorization,
+            userId: tokenResponse.data.id,
         });
         dispatch(push('/'));
     } catch (exception) {

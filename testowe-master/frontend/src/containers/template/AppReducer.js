@@ -4,6 +4,7 @@ import {LOGIN} from "../login/LoginPageActions";
 const initialState = {
     token: null,
     authenticated: false,
+    userId: null
 };
 
 export default (state = initialState, action) => {
@@ -14,7 +15,8 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 token: action.token,
-                authenticated: true
+                authenticated: true,
+                userId: action.userId
             };
         default:
             return state

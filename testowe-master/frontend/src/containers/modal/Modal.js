@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal } from 'react-bootstrap';
 import { openModal, closeModal } from './ModalActions';
-import { PrintTerms } from './Terms';
 
 class DisplayModal extends Component {
     render() {

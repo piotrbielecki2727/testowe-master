@@ -47,8 +47,6 @@ class CertificateDetails extends Component {
                 <thead>
                     <tr>
                         <th>Certificate ID</th>
-                        <th>User ID</th>
-                        <th>Email</th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Created date</th>
@@ -58,8 +56,6 @@ class CertificateDetails extends Component {
                 <tbody>
                     <tr>
                         <td>{resource.id}</td>
-                        <td>{resource.user_id}</td>
-                        <td>{resource.email}</td>
                         <td>{resource.name}</td>
                         <td className='CertificateDetail'>{resource.description}</td>
                         <td>{this.formatDate(resource.created_at)}</td>

@@ -6,7 +6,6 @@ import { Button, Col, Glyphicon, OverlayTrigger, Row, Tooltip } from "react-boot
 import { LinkContainer } from "react-router-bootstrap";
 import * as actions from "./CertificatesApi";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import DisplayModal from '../modal/Modal'
 
 class Certificates extends Component {
     state = { certificates: null, page: 1, sizePerPage: 10 };
@@ -18,8 +17,9 @@ class Certificates extends Component {
 
 
 
-    reload(page=this.state.page, sizePerPage=this.state.sizePerPage) {
-        this.props.actions.loadCertificates({ page: page, per_page: sizePerPage },
+    reload(page = this.state.page, sizePerPage = this.state.sizePerPage) {
+        const { userId } = this.props;
+        this.props.actions.loadCertificates({ page: page, per_page: sizePerPage, userId },
             certificates => this.setState({ certificates, page, sizePerPage }));
     }
 
@@ -30,6 +30,7 @@ class Certificates extends Component {
     }
 
     render() {
+   
         const { certificates, page, sizePerPage } = this.state;
         return (<div >
             <Row className="vertical-middle breadcrumbs">
@@ -70,8 +71,6 @@ class Certificates extends Component {
                     }
                 >
                     <TableHeaderColumn width="10" isKey dataField='id'>Certificate ID</TableHeaderColumn>
-                    <TableHeaderColumn width="7" dataField='user_id'>User ID</TableHeaderColumn>
-                    <TableHeaderColumn width="20" dataField='email'>Users email</TableHeaderColumn>
                     <TableHeaderColumn width="30" dataField='name'>Name</TableHeaderColumn>
                     <TableHeaderColumn width="30" dataField='description'>Description</TableHeaderColumn>
                     <TableHeaderColumn width="20" dataField='id' dataFormat={(cell, row) => {
@@ -125,15 +124,28 @@ class Certificates extends Component {
     }
 }
 
+
+
+const mapStateToProps = ({ appState }) => ({
+    userId: appState.userId,
+})
+
+
+
+
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(
         actions,
         dispatch)
 });
 
+
+
+
+
 export default connect(
-    undefined,
-    mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps,
 )(Certificates)
 
 
